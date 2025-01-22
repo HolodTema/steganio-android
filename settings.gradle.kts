@@ -21,4 +21,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "Steganio"
 include(":app")
- 
