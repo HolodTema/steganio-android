@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:id="@+id/root_activity_login"
+    tools:context=".activity.LoginActivity"
+    android:background="@color/colorSecondary">
+    <ImageView
+        android:id="@+id/imageBackground"
+        android:layout_width="match_parent"
+        android:layout_height="600dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/background_login_rounded"/>
+    <TextView
+        android:id="@+id/textLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enter your PIN:"
+        android:textColor="@color/colorOnBackground"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/linearDigitIndicators"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="32dp"/>
+    <LinearLayout
+        android:id="@+id/linearDigitIndicators"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/gridLoginKeyboard"
+        app:layout_constraintEnd_toEndOf="@+id/gridLoginKeyboard"
+        app:layout_constraintStart_toStartOf="@+id/gridLoginKeyboard"
+        android:layout_marginBottom="32dp">
+
+        <ImageView
+            android:id="@+id/imageDigitIndicator1"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginHorizontal="16dp"
+            android:background="@drawable/background_digit_indicator_unchecked" />
+
+        <ImageView
+            android:id="@+id/imageDigitIndicator2"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginHorizontal="16dp"
+            android:background="@drawable/background_digit_indicator_unchecked" />
+
+        <ImageView
+            android:id="@+id/imageDigitIndicator3"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginHorizontal="16dp"
+            android:background="@drawable/background_digit_indicator_unchecked" />
+
+        <ImageView
+            android:id="@+id/imageDigitIndicator4"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginHorizontal="16dp"
+            android:background="@drawable/background_digit_indicator_unchecked" />
+    </LinearLayout>
+    <GridLayout
+        android:id="@+id/gridLoginKeyboard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:columnCount="3"
+        android:rowCount="4"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="32dp">
+
+        <TextView
+            android:id="@+id/buttonDigit1"
+            style="@style/styleLoginDigitButton"
+            android:text="1" />
+
+        <TextView
+            android:id="@+id/buttonDigit2"
+            style="@style/styleLoginDigitButton"
+            android:text="2" />
+
+        <TextView
+            android:id="@+id/buttonDigit3"
+            style="@style/styleLoginDigitButton"
+            android:text="3" />
+
+        <TextView
+            android:id="@+id/buttonDigit4"
+            style="@style/styleLoginDigitButton"
+            android:text="4" />
+
+        <TextView
+            android:id="@+id/buttonDigit5"
+            style="@style/styleLoginDigitButton"
+            android:text="5" />
+
+        <TextView
+            android:id="@+id/buttonDigit6"
+            style="@style/styleLoginDigitButton"
+            android:text="6" />
+
+        <TextView
+            android:id="@+id/buttonDigit7"
+            style="@style/styleLoginDigitButton"
+            android:text="7" />
+
+        <TextView
+            android:id="@+id/buttonDigit8"
+            style="@style/styleLoginDigitButton"
+            android:text="8" />
+
+        <TextView
+            android:id="@+id/buttonDigit9"
+            style="@style/styleLoginDigitButton"
+            android:text="9" />
+
+        <ImageButton
+            android:id="@+id/buttonFingerprint"
+            style="@style/styleLoginDigitButton"
+            android:src="@drawable/ic_fingerprint"
+            app:tint="@color/colorOnPrimary" />
+
+        <TextView
+            android:id="@+id/buttonDigit0"
+            style="@style/styleLoginDigitButton"
+            android:text="0" />
+
+        <ImageButton
+            android:id="@+id/buttonClear"
+            style="@style/styleLoginDigitButton"
+            android:src="@drawable/ic_clear" />
+    </GridLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLoginIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/imageBackground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageLoginIcon"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/background_login_icon"
+            android:src="@drawable/icon" />
+
+        <TextView
+            android:id="@+id/textLoginIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="17dp"
+            android:layout_marginStart="8dp"
+            android:fontFamily="@font/rainbow"
+            android:text="STEGANIO"
+            android:textColor="@color/colorOnSecondary"
+
+            android:textSize="60sp" />
+    </LinearLayout>
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -18,7 +18,7 @@ def prepare_secret(secret: str):
 def encrypt_by_spaces(container: str, secret: str):
     prepare_secret(secret)
     prepare_container(container)
-    
+
     caret = 0
     for ch in secret:
         code = (bin(ALPHABET.find(ch))[2:]).zfill(8)
