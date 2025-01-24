@@ -166,6 +166,14 @@
             android:textSize="60sp" />
     </LinearLayout>
 
+    <ImageButton
+        android:id="@+id/buttonBack"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
 
 

@@ -6,15 +6,58 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.SettingsActivity">
+
     <TextView
-        android:id="@+id/text"
+        android:id="@+id/textCaptionHasPIN"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="settings"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+        android:text="PIN to unlock the app"
+        android:textColor="@color/colorOnBackground"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/switchHasPIN"
+        app:layout_constraintEnd_toStartOf="@+id/switchHasPIN"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintTop_toTopOf="@+id/switchHasPIN" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/switchHasPIN"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="30dp" />
+
+    <Button
+        android:id="@+id/buttonChangePIN"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Change PIN"
+        android:background="@drawable/background_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/switchHasPIN"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/textCaptionAboutApp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="About app"
+        android:textColor="@color/colorOnBackground"
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@+id/buttonChangePIN"
+        android:gravity="center"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/textAboutApp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/textCaptionAboutApp"
+        android:layout_marginTop="10dp"
+        android:text="Hello world"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"

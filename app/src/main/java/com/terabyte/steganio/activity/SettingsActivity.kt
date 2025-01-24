@@ -1,18 +1,27 @@
 package com.terabyte.steganio.activity
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.ViewModelProvider
 import com.terabyte.steganio.R
 import com.terabyte.steganio.TextActivity
 import com.terabyte.steganio.databinding.ActivitySettingsBinding
+import com.terabyte.steganio.util.INTENT_KEY_LOGIN_ACTIVITY_MODE
+import com.terabyte.steganio.util.LOGIN_ACTIVITY_MODE_CREATE
+import com.terabyte.steganio.util.ShPreferencesHelper
+import com.terabyte.steganio.viewmodel.SettingsViewModel
 
 class SettingsActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySettingsBinding
+    private lateinit var viewModel: SettingsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,7 +34,37 @@ class SettingsActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        configureBottomNavigationView()
 
+        viewModel = ViewModelProvider(this)[SettingsViewModel::class.java]
+        binding.switchHasPIN.isChecked = viewModel.liveDataHasPIN.value ?: false
+        binding.switchHasPIN.setOnCheckedChangeListener { compoundButton, b ->
+            viewModel.liveDataHasPIN.value = b
+            if (b) {
+                showDialogCreatePIN()
+            }
+            else {
+                ShPreferencesHelper.deleteStringFromShPreferences(this, ShPreferencesHelper.KEY_PIN)
+            }
+        }
+
+        binding.buttonChangePIN.setOnClickListener {
+            startLoginActivityToChangePIN()
+        }
+
+        viewModel.liveDataHasPIN.observe(this) {
+            binding.switchHasPIN.isChecked = it
+            if (it) {
+                binding.buttonChangePIN.visibility = View.VISIBLE
+            }
+            else {
+                binding.buttonChangePIN.visibility = View.INVISIBLE
+            }
+        }
+
+    }
+
+    private fun configureBottomNavigationView() {
         binding.bottomNavigationView.selectedItemId = R.id.menuItemSettings
         binding.bottomNavigationView.setOnApplyWindowInsetsListener(null)
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
@@ -56,5 +95,32 @@ class SettingsActivity : AppCompatActivity() {
                 else -> false
             }
         }
+    }
+
+    private fun startLoginActivityToChangePIN() {
+        val intent = Intent(this, LoginActivity::class.java)
+        intent.putExtra(INTENT_KEY_LOGIN_ACTIVITY_MODE, LOGIN_ACTIVITY_MODE_CREATE)
+        startActivity(intent)
+    }
+
+    private fun showDialogCreatePIN() {
+        val builder = AlertDialog.Builder(this)
+            .setMessage("Do you want to create PIN for this app?")
+            .setPositiveButton(
+                "yes",
+                DialogInterface.OnClickListener({ dialog, which ->
+                    startLoginActivityToChangePIN()
+                })
+            )
+            .setNegativeButton(
+                "cancel",
+                DialogInterface.OnClickListener({ dialog, which ->
+                    binding.switchHasPIN.isChecked = false
+                    dialog.cancel()
+                })
+            )
+            .setCancelable(true)
+            .create()
+            .show()
     }
 }

@@ -10,10 +10,10 @@ import androidx.lifecycle.ViewModelProvider
 import com.terabyte.steganio.activity.ImageActivity
 import com.terabyte.steganio.activity.SettingsActivity
 import com.terabyte.steganio.databinding.ActivityTextBinding
-import com.terabyte.steganio.viewmodel.MainViewModel
+import com.terabyte.steganio.viewmodel.TextViewModel
 
 class TextActivity : AppCompatActivity() {
-    private lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: TextViewModel
     private lateinit var binding: ActivityTextBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,7 +28,7 @@ class TextActivity : AppCompatActivity() {
             insets
         }
 
-        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
+        viewModel = ViewModelProvider(this)[TextViewModel::class.java]
 
         binding.bottomNavigationView.selectedItemId = R.id.menuItemText
         binding.bottomNavigationView.setOnApplyWindowInsetsListener(null)

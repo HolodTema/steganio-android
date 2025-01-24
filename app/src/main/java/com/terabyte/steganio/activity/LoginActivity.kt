@@ -1,6 +1,8 @@
 package com.terabyte.steganio.activity
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -9,7 +11,13 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import com.terabyte.steganio.R
+import com.terabyte.steganio.TextActivity
 import com.terabyte.steganio.databinding.ActivityLoginBinding
+import com.terabyte.steganio.util.INTENT_KEY_LOGIN_ACTIVITY_MODE
+import com.terabyte.steganio.util.INTENT_KEY_PIN_TO_CONFIRM
+import com.terabyte.steganio.util.LOGIN_ACTIVITY_MODE_CONFIRM
+import com.terabyte.steganio.util.LOGIN_ACTIVITY_MODE_CREATE
+import com.terabyte.steganio.util.showToast
 import com.terabyte.steganio.viewmodel.LoginViewModel
 
 class LoginActivity : AppCompatActivity() {
@@ -18,6 +26,7 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        supportActionBar?.hide()
         enableEdgeToEdge()
         window.navigationBarColor = ContextCompat.getColor(this, R.color.colorOnSecondary)
         binding = ActivityLoginBinding.inflate(layoutInflater)
@@ -29,6 +38,26 @@ class LoginActivity : AppCompatActivity() {
         }
 
         viewModel = ViewModelProvider(this)[LoginViewModel::class.java]
+
+        viewModel.liveDataMode.observe(this) { mode ->
+            if (mode.isEmpty()) {
+                binding.buttonBack.visibility = View.GONE
+            }
+            else {
+                binding.buttonBack.visibility = View.VISIBLE
+            }
+        }
+
+        if (intent.extras != null && intent.extras!!.containsKey(INTENT_KEY_LOGIN_ACTIVITY_MODE)) {
+            val mode = intent.extras!!.getString(INTENT_KEY_LOGIN_ACTIVITY_MODE)
+            if (mode == LOGIN_ACTIVITY_MODE_CREATE) {
+                viewModel.setModeCreate()
+            }
+            else if (mode == LOGIN_ACTIVITY_MODE_CONFIRM) {
+                val pinToConfirm = intent.extras!!.getString(INTENT_KEY_PIN_TO_CONFIRM)!!
+                viewModel.setModeConfirm(pinToConfirm)
+            }
+        }
 
         val indicators = listOf(
             binding.imageDigitIndicator1,
@@ -79,6 +108,11 @@ class LoginActivity : AppCompatActivity() {
 
         binding.buttonFingerprint.setOnClickListener {
             // TODO: fingerprint login
+            showToast("Fingerprint login feature is coming soon!")
+        }
+
+        binding.buttonBack.setOnClickListener {
+            startActivity(Intent(this, SettingsActivity::class.java))
         }
 
 
