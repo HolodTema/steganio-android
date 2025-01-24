@@ -7,7 +7,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.terabyte.steganio.MainActivity
+import com.terabyte.steganio.TextActivity
 import com.terabyte.steganio.util.ShPreferencesHelper
 
 class LoginViewModel(application: Application): AndroidViewModel(application) {
@@ -29,7 +29,7 @@ class LoginViewModel(application: Application): AndroidViewModel(application) {
     }
 
     fun startMainActivity(context: Context) {
-        val intent = Intent(context, MainActivity::class.java)
+        val intent = Intent(context, TextActivity::class.java)
         context.startActivity(intent)
     }
 
