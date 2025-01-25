@@ -31,7 +31,6 @@ class LoginActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        window.navigationBarColor = ContextCompat.getColor(this, R.color.colorOnSecondary)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.root_activity_login)) { v, insets ->
@@ -42,26 +41,24 @@ class LoginActivity : FragmentActivity() {
 
         viewModel = ViewModelProvider(this)[LoginViewModel::class.java]
 
+        configureIntentExtras()
+        configurePinKeyboard()
+        configureButtonBack()
+        configureBiometricAuth()
+
         viewModel.liveDataMode.observe(this) { mode ->
             if (mode.isEmpty()) {
                 binding.buttonBack.visibility = View.GONE
+                binding.buttonFingerprint.visibility = View.VISIBLE
             }
             else {
                 binding.buttonBack.visibility = View.VISIBLE
+                binding.buttonFingerprint.visibility = View.GONE
             }
         }
+    }
 
-        if (intent.extras != null && intent.extras!!.containsKey(INTENT_KEY_LOGIN_ACTIVITY_MODE)) {
-            val mode = intent.extras!!.getString(INTENT_KEY_LOGIN_ACTIVITY_MODE)
-            if (mode == LOGIN_ACTIVITY_MODE_CREATE) {
-                viewModel.setModeCreate()
-            }
-            else if (mode == LOGIN_ACTIVITY_MODE_CONFIRM) {
-                val pinToConfirm = intent.extras!!.getString(INTENT_KEY_PIN_TO_CONFIRM)!!
-                viewModel.setModeConfirm(pinToConfirm)
-            }
-        }
-
+    private fun configurePinKeyboard() {
         val indicators = listOf(
             binding.imageDigitIndicator1,
             binding.imageDigitIndicator2,
@@ -108,55 +105,74 @@ class LoginActivity : FragmentActivity() {
         binding.buttonClear.setOnClickListener {
             viewModel.liveDataPIN.value = ""
         }
+    }
 
+    private fun configureIntentExtras() {
+        if (intent.extras != null && intent.extras!!.containsKey(INTENT_KEY_LOGIN_ACTIVITY_MODE)) {
+            val mode = intent.extras!!.getString(INTENT_KEY_LOGIN_ACTIVITY_MODE)
+            if (mode == LOGIN_ACTIVITY_MODE_CREATE) {
+                viewModel.setModeCreate()
+            }
+            else if (mode == LOGIN_ACTIVITY_MODE_CONFIRM) {
+                val pinToConfirm = intent.extras!!.getString(INTENT_KEY_PIN_TO_CONFIRM)!!
+                viewModel.setModeConfirm(pinToConfirm)
+            }
+        }
+    }
+
+    private fun configureButtonBack() {
         binding.buttonBack.setOnClickListener {
             startActivity(Intent(this, SettingsActivity::class.java))
         }
+    }
 
+    private fun configureBiometricAuth() {
         val biometricManager = BiometricManager.from(applicationContext)
         val isBiometricsCompatible = biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG) == BiometricManager.BIOMETRIC_SUCCESS
 
         binding.buttonFingerprint.setOnClickListener {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                if (isBiometricsCompatible) {
-                    val biometricPrompt = BiometricPrompt(this,
-                        applicationContext.mainExecutor,
-                        object: BiometricPrompt.AuthenticationCallback() {
-                            override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
-                                super.onAuthenticationSucceeded(result)
-                                viewModel.startMainActivity(this@LoginActivity)
-                            }
+            if(viewModel.isBiometricAuthEnabled) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    if (isBiometricsCompatible) {
+                        val biometricPrompt = BiometricPrompt(this,
+                            applicationContext.mainExecutor,
+                            object: BiometricPrompt.AuthenticationCallback() {
+                                override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+                                    super.onAuthenticationSucceeded(result)
+                                    viewModel.startMainActivity(this@LoginActivity)
+                                }
 
-                            override fun onAuthenticationError(
-                                errorCode: Int,
-                                errString: CharSequence
-                            ) {
-                                showToast("Unable to use biometric to log in. Use PIN to log in.")
-                            }
+                                override fun onAuthenticationError(
+                                    errorCode: Int,
+                                    errString: CharSequence
+                                ) {
+                                    showToast("Unable to use biometric to log in. Use PIN to log in.")
+                                }
 
-                            override fun onAuthenticationFailed() {
-                                //do nothing
-                            }
-                        })
-                    val promptInfo = BiometricPrompt.PromptInfo.Builder()
-                        .setTitle("Biometric authentication")
-                        .setDescription("Use your fingerprint or Face-ID to log in")
-                        .setNegativeButtonText("cancel")
-                        .setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_STRONG)
-                        .build()
-                    biometricPrompt.authenticate(promptInfo)
+                                override fun onAuthenticationFailed() {
+                                    //do nothing
+                                }
+                            })
+                        val promptInfo = BiometricPrompt.PromptInfo.Builder()
+                            .setTitle("Biometric authentication")
+                            .setDescription("Use your fingerprint or Face-ID to log in")
+                            .setNegativeButtonText("cancel")
+                            .setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_STRONG)
+                            .build()
+                        biometricPrompt.authenticate(promptInfo)
+                    }
+                    else {
+                        showToast("Biometric authentication is not supported on this device.")
+                    }
                 }
                 else {
-                    showToast("Biometric authentication is not supported on this device.")
+                    showToast("Biometric authentication is supported only on Android 10 and higher.")
                 }
             }
             else {
-                showToast("Biometric authentication is supported only on Android 10 and higher.")
+                showToast("Enable biometric authentication in app settings")
             }
+
         }
-
-
-
-
     }
 }

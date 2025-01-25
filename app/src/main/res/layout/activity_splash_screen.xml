@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.SplashScreenActivity"
-    android:background="@color/colorSecondary">
+    android:background="@color/colorSecondaryLight">
 
     <TextView
         android:id="@+id/textIcon"
@@ -14,7 +14,7 @@
         android:layout_height="50dp"
         android:fontFamily="@font/rainbow"
         android:text="STEGANIO"
-        android:textColor="@color/colorOnSecondary"
+        android:textColor="@color/colorOnSecondaryLight"
         android:textSize="60sp"
         app:layout_constraintBottom_toTopOf="@+id/imageIcon"
         app:layout_constraintEnd_toEndOf="parent"
@@ -36,7 +36,7 @@
         android:id="@+id/progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:indeterminateTint="@color/colorOnSecondary"
+        android:indeterminateTint="@color/colorOnSecondaryLight"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -48,7 +48,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="The best defence of secrets is the absense of these secrets."
-        android:textColor="@color/colorOnSecondary"
+        android:textColor="@color/colorOnSecondaryLight"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/progress"
         android:layout_marginHorizontal="30dp"/>

@@ -23,6 +23,8 @@ class LoginViewModel(application: Application): AndroidViewModel(application) {
     val liveDataMode = MutableLiveData("")
     private var pinToConfirm = ""
 
+    val isBiometricAuthEnabled = ShPreferencesHelper.getBooleanFromShPreferences(application, ShPreferencesHelper.KEY_HAS_BIOMETRIC_AUTH)
+
     fun checkPIN(context: Context) {
         when (liveDataMode.value) {
             LOGIN_ACTIVITY_MODE_CREATE -> {

@@ -2,8 +2,10 @@ package com.terabyte.steganio.activity
 
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.res.Resources
 import android.os.Build
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
@@ -34,10 +36,31 @@ class SettingsActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        configureBottomNavigationView()
-
         viewModel = ViewModelProvider(this)[SettingsViewModel::class.java]
+
+        configureBottomNavigationView()
+        configureSwitchLoginTextCaptions()
+        configureSwitchDarkTheme()
+        configureAuthBlock()
+    }
+
+    override fun getTheme(): Resources.Theme {
+        val theme = super.getTheme()
+        val isDarkTheme = ShPreferencesHelper.getBooleanFromShPreferences(this@SettingsActivity, ShPreferencesHelper.KEY_HAS_DARK_THEME)
+        if (isDarkTheme) {
+            theme.applyStyle(R.style.Theme_SteganioLight, true)
+        }
+        else {
+            theme.applyStyle(R.style.Theme_SteganioLight, true)
+        }
+        return theme
+    }
+
+    private fun configureAuthBlock() {
         binding.switchHasPIN.isChecked = viewModel.liveDataHasPIN.value ?: false
+        if (binding.switchHasPIN.isChecked) {
+            binding.switchBiometricAuthentication.isChecked = ShPreferencesHelper.getBooleanFromShPreferences(this@SettingsActivity, ShPreferencesHelper.KEY_HAS_BIOMETRIC_AUTH)
+        }
         binding.switchHasPIN.setOnCheckedChangeListener { compoundButton, b ->
             viewModel.liveDataHasPIN.value = b
             if (b) {
@@ -45,7 +68,13 @@ class SettingsActivity : AppCompatActivity() {
             }
             else {
                 ShPreferencesHelper.deleteStringFromShPreferences(this, ShPreferencesHelper.KEY_PIN)
+                ShPreferencesHelper.putBooleanToShPreferences(this, ShPreferencesHelper.KEY_HAS_BIOMETRIC_AUTH, false)
+                binding.switchBiometricAuthentication.isChecked = false
             }
+        }
+
+        binding.switchBiometricAuthentication.setOnCheckedChangeListener { compoundButton, b ->
+            ShPreferencesHelper.putBooleanToShPreferences(this@SettingsActivity, ShPreferencesHelper.KEY_HAS_BIOMETRIC_AUTH, b)
         }
 
         binding.buttonChangePIN.setOnClickListener {
@@ -53,15 +82,36 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         viewModel.liveDataHasPIN.observe(this) {
-            binding.switchHasPIN.isChecked = it
             if (it) {
-                binding.buttonChangePIN.visibility = View.VISIBLE
+                val typedValue = TypedValue()
+                theme.resolveAttribute(com.google.android.material.R.attr.colorOnBackground, typedValue, true)
+                binding.textCaptionBiometricAuth.setTextColor(typedValue.data)
             }
             else {
-                binding.buttonChangePIN.visibility = View.INVISIBLE
+                val typedValue = TypedValue()
+                theme.resolveAttribute(R.attr.colorOnBackgroundDisabled, typedValue, true)
+                binding.textCaptionBiometricAuth.setTextColor(typedValue.data)
             }
-        }
 
+            binding.switchHasPIN.isChecked = it
+            binding.buttonChangePIN.isEnabled = it
+            binding.switchBiometricAuthentication.isEnabled = it
+        }
+    }
+
+    private fun configureSwitchDarkTheme() {
+        binding.switchDarkTheme.isChecked = ShPreferencesHelper.getBooleanFromShPreferences(this, ShPreferencesHelper.KEY_HAS_DARK_THEME)
+        binding.switchDarkTheme.setOnCheckedChangeListener { compoundButton, b ->
+            ShPreferencesHelper.putBooleanToShPreferences(this@SettingsActivity, ShPreferencesHelper.KEY_HAS_DARK_THEME, b)
+            recreate()
+        }
+    }
+
+    private fun configureSwitchLoginTextCaptions() {
+        binding.switchLoginTextCaptions.isChecked = ShPreferencesHelper.getBooleanFromShPreferences(this, ShPreferencesHelper.KEY_HAS_SPLASH_TEXT_BLOCK)
+        binding.switchLoginTextCaptions.setOnCheckedChangeListener { compoundButton, b ->
+            ShPreferencesHelper.putBooleanToShPreferences(this, ShPreferencesHelper.KEY_HAS_SPLASH_TEXT_BLOCK, b)
+        }
     }
 
     private fun configureBottomNavigationView() {
@@ -119,7 +169,10 @@ class SettingsActivity : AppCompatActivity() {
                     dialog.cancel()
                 })
             )
-            .setCancelable(true)
+            .setCancelable(false)
+            .setOnDismissListener {
+                binding.switchHasPIN.isChecked = false
+            }
             .create()
             .show()
     }

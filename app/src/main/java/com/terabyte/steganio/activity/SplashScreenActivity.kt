@@ -2,6 +2,7 @@ package com.terabyte.steganio.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -40,19 +41,29 @@ class SplashScreenActivity : AppCompatActivity() {
                 else {
                     startActivity(Intent(this, TextActivity::class.java))
                 }
+                finish()
             }
         }
 
-        val listQuotes = listOf(
-            "The best defence of secrets is the absence of these secrets.",
-            "We offer the best encryption in the world\n(maybe, you believe it)",
-            "Never gonna give your secrets up!",
-            "All the words in this text block are joke. We hope you enjoy it!",
-            "Words are deceptive: Steganio is not like Slitherio, Paperio, or Agario.",
-            "All right then, keep your secrets...",
-            "The truth always reveals itself."
-        )
-        binding.textQuote.text = listQuotes.random()
+        val hasSplashTextBlock = ShPreferencesHelper.getBooleanFromShPreferences(this, ShPreferencesHelper.KEY_HAS_SPLASH_TEXT_BLOCK)
+        if (hasSplashTextBlock) {
+            binding.textQuote.visibility = View.VISIBLE
+            val listQuotes = listOf(
+                "The best defence of secrets is the absence of these secrets.",
+                "We offer the best encryption in the world\n(maybe, you believe it)",
+                "Never gonna give your secrets up!",
+                "All the words in this text block are joke. We hope you enjoy it!",
+                "Words are deceptive: Steganio is not like Slitherio, Paperio, or Agario.",
+                "All right then, keep your secrets...",
+                "The truth always reveals itself."
+            )
+            binding.textQuote.text = listQuotes.random()
+        }
+        else {
+            binding.textQuote.visibility = View.INVISIBLE
+        }
+
+
 
     }
 }

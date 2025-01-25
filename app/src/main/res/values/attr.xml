@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <attr name="colorBackground" format="reference|color"/>
+    <attr name="colorBackground" format="reference|color" />
+    <attr name="colorOnBackgroundDisabled" format="reference|color" />
+    <attr name="colorTabIndicator" format="reference|color" />
 </resources>

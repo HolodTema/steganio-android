@@ -4,14 +4,30 @@
     <color name="white">#FFFFFFFF</color>
     <color name="grey">#D0D0D0</color>
 
-    <color name="colorPrimary">#ff5722</color>
-    <color name="colorSecondary">#f57c00</color>
-    <color name="colorBackground">#ffffff</color>
-    <color name="colorSurface">#ffe0b2</color>
-    <color name="colorError">#b00020</color>
-    <color name="colorOnPrimary">#ffffff</color>
-    <color name="colorOnSecondary">#ffffff</color>
-    <color name="colorOnBackground">#1d1d1d</color>
-    <color name="colorOnSurface">#1d1d1d</color>
-    <color name="colorOnError">#ffffff</color>
+    <color name="colorPrimaryLight">#ff5722</color>
+    <color name="colorSecondaryLight">#f57c00</color>
+    <color name="colorBackgroundLight">#ffffff</color>
+    <color name="colorSurfaceLight">#ffe0b2</color>
+    <color name="colorErrorLight">#b00020</color>
+    <color name="colorOnPrimaryLight">#ffffff</color>
+    <color name="colorOnSecondaryLight">#ffffff</color>
+    <color name="colorOnBackgroundLight">#1d1d1d</color>
+    <color name="colorOnBackgroundDisabledLight">#808080</color>
+    <color name="colorOnSurfaceLight">#1d1d1d</color>
+    <color name="colorOnErrorLight">#ffffff</color>
+    <color name="colorTabIndicatorLight">#b00020</color>
+
+    <color name="colorPrimaryDark">#bb87fc</color>
+    <color name="colorSecondaryDark">#3700b3</color>
+    <color name="colorBackgroundDark">#000000</color>
+    <color name="colorSurfaceDark">#ffe0b2</color>
+    <color name="colorErrorDark">#cf6679</color>
+    <color name="colorOnPrimaryDark">#ffffff</color>
+    <color name="colorOnSecondaryDark">#ffffff</color>
+    <color name="colorOnBackgroundDark">#1d1d1d</color>
+    <color name="colorOnBackgroundDisabledDark">#808080</color>
+    <color name="colorOnSurfaceDark">#1d1d1d</color>
+    <color name="colorOnErrorDark">#ffffff</color>
+    <color name="colorTabIndicatorDark">#b00020</color>
+
 </resources>

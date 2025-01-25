@@ -6,19 +6,21 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.tabs.TabLayoutMediator
 import com.terabyte.steganio.activity.ImageActivity
 import com.terabyte.steganio.activity.SettingsActivity
 import com.terabyte.steganio.databinding.ActivityTextBinding
+import com.terabyte.steganio.ui.TextViewPagerAdapter
 import com.terabyte.steganio.viewmodel.TextViewModel
 
-class TextActivity : AppCompatActivity() {
+class TextActivity : FragmentActivity() {
     private lateinit var viewModel: TextViewModel
     private lateinit var binding: ActivityTextBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        supportActionBar?.hide()
         enableEdgeToEdge()
         binding = ActivityTextBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -30,6 +32,20 @@ class TextActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(this)[TextViewModel::class.java]
 
+        configureBottomNavView()
+        configureTabLayoutViewPager()
+    }
+
+    private fun configureTabLayoutViewPager() {
+        val listTabTitles = listOf("Encryption", "Decryption")
+        val adapter = TextViewPagerAdapter(this, listTabTitles)
+        binding.viewPager.adapter = adapter
+        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+            tab.text = listTabTitles[position]
+        }.attach()
+    }
+
+    private fun configureBottomNavView() {
         binding.bottomNavigationView.selectedItemId = R.id.menuItemText
         binding.bottomNavigationView.setOnApplyWindowInsetsListener(null)
         binding.bottomNavigationView.setOnItemSelectedListener { item ->

@@ -7,7 +7,7 @@
     android:fitsSystemWindows="true"
     android:id="@+id/root_activity_login"
     tools:context=".activity.LoginActivity"
-    android:background="@color/colorSecondary">
+    android:background="@color/colorSecondaryLight">
     <ImageView
         android:id="@+id/imageBackground"
         android:layout_width="match_parent"
@@ -19,7 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Enter your PIN:"
-        android:textColor="@color/colorOnBackground"
+        android:textColor="@color/colorOnBackgroundLight"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/linearDigitIndicators"
         app:layout_constraintEnd_toEndOf="parent"
@@ -123,7 +123,7 @@
             android:id="@+id/buttonFingerprint"
             style="@style/styleLoginDigitButton"
             android:src="@drawable/ic_fingerprint"
-            app:tint="@color/colorOnPrimary" />
+            app:tint="@color/colorOnPrimaryLight" />
 
         <TextView
             android:id="@+id/buttonDigit0"
@@ -161,7 +161,7 @@
             android:layout_marginStart="8dp"
             android:fontFamily="@font/rainbow"
             android:text="STEGANIO"
-            android:textColor="@color/colorOnSecondary"
+            android:textColor="@color/colorOnSecondaryLight"
 
             android:textSize="60sp" />
     </LinearLayout>
