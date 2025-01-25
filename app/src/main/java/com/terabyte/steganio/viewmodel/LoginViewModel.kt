@@ -34,7 +34,7 @@ class LoginViewModel(application: Application): AndroidViewModel(application) {
             }
             LOGIN_ACTIVITY_MODE_CONFIRM -> {
                 if (liveDataPIN.value == pinToConfirm) {
-                    ShPreferencesHelper.putStringToShPreferences(context, ShPreferencesHelper.KEY_PIN, pinToConfirm)
+                    ShPreferencesHelper.putStringToShPreferences(context, ShPreferencesHelper.KEY_PIN, pinToConfirm.hashCode().toString())
                     context.showToast("New PIN created successfully!")
                     startMainActivity(context)
                 }

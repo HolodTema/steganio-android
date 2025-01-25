@@ -1,14 +1,18 @@
 package com.terabyte.steganio.activity
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.biometric.BiometricManager
+import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import com.terabyte.steganio.R
 import com.terabyte.steganio.TextActivity
@@ -20,13 +24,12 @@ import com.terabyte.steganio.util.LOGIN_ACTIVITY_MODE_CREATE
 import com.terabyte.steganio.util.showToast
 import com.terabyte.steganio.viewmodel.LoginViewModel
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : FragmentActivity() {
     private lateinit var viewModel: LoginViewModel
     private lateinit var binding: ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        supportActionBar?.hide()
         enableEdgeToEdge()
         window.navigationBarColor = ContextCompat.getColor(this, R.color.colorOnSecondary)
         binding = ActivityLoginBinding.inflate(layoutInflater)
@@ -106,14 +109,53 @@ class LoginActivity : AppCompatActivity() {
             viewModel.liveDataPIN.value = ""
         }
 
-        binding.buttonFingerprint.setOnClickListener {
-            // TODO: fingerprint login
-            showToast("Fingerprint login feature is coming soon!")
-        }
-
         binding.buttonBack.setOnClickListener {
             startActivity(Intent(this, SettingsActivity::class.java))
         }
+
+        val biometricManager = BiometricManager.from(applicationContext)
+        val isBiometricsCompatible = biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG) == BiometricManager.BIOMETRIC_SUCCESS
+
+        binding.buttonFingerprint.setOnClickListener {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                if (isBiometricsCompatible) {
+                    val biometricPrompt = BiometricPrompt(this,
+                        applicationContext.mainExecutor,
+                        object: BiometricPrompt.AuthenticationCallback() {
+                            override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+                                super.onAuthenticationSucceeded(result)
+                                viewModel.startMainActivity(this@LoginActivity)
+                            }
+
+                            override fun onAuthenticationError(
+                                errorCode: Int,
+                                errString: CharSequence
+                            ) {
+                                showToast("Unable to use biometric to log in. Use PIN to log in.")
+                            }
+
+                            override fun onAuthenticationFailed() {
+                                //do nothing
+                            }
+                        })
+                    val promptInfo = BiometricPrompt.PromptInfo.Builder()
+                        .setTitle("Biometric authentication")
+                        .setDescription("Use your fingerprint or Face-ID to log in")
+                        .setNegativeButtonText("cancel")
+                        .setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_STRONG)
+                        .build()
+                    biometricPrompt.authenticate(promptInfo)
+                }
+                else {
+                    showToast("Biometric authentication is not supported on this device.")
+                }
+            }
+            else {
+                showToast("Biometric authentication is supported only on Android 10 and higher.")
+            }
+        }
+
+
 
 
     }

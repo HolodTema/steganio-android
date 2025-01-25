@@ -26,6 +26,7 @@
         android:layout_height="80dp"
         android:background="@drawable/background_login_icon"
         android:src="@drawable/icon"
+        android:layout_marginBottom="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -40,4 +41,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageIcon" />
+
+    <TextView
+        android:id="@+id/textQuote"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="The best defence of secrets is the absense of these secrets."
+        android:textColor="@color/colorOnSecondary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/progress"
+        android:layout_marginHorizontal="30dp"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
